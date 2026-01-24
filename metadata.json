@@ -1,0 +1,7 @@
+{
+  "name": "PulseAudit - AI Compliance Platform",
+  "description": "A production-ready SaaS for automated compliance audits of privacy policies and legal documents using AI.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
