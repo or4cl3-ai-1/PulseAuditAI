@@ -20,10 +20,10 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
 
   const getSeverityColor = (sev: string) => {
     switch(sev) {
-      case 'high': return 'bg-red-100 text-red-700 border-red-200';
-      case 'medium': return 'bg-amber-100 text-amber-700 border-amber-200';
-      case 'low': return 'bg-blue-100 text-blue-700 border-blue-200';
-      default: return 'bg-slate-100 text-slate-700';
+      case 'high': return 'bg-red-500/10 text-red-400 border-red-500/30';
+      case 'medium': return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+      case 'low': return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30';
+      default: return 'bg-slate-800 text-slate-400';
     }
   };
 
@@ -38,18 +38,18 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
       const response = await chatWithAuditor(audit, input, chatHistory);
       setChatHistory(prev => [...prev, { role: 'assistant', content: response }]);
     } catch (err) {
-      setChatHistory(prev => [...prev, { role: 'assistant', content: "Sorry, I had trouble answering that." }]);
+      setChatHistory(prev => [...prev, { role: 'assistant', content: "System logic error. Try again later." }]);
     } finally {
       setIsTyping(false);
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-8 space-y-8 pb-32 flex flex-col lg:flex-row gap-8">
+    <div className="max-w-7xl mx-auto p-4 sm:p-8 space-y-10 pb-40 flex flex-col lg:flex-row gap-10 bg-slate-950 text-white">
       {/* Version Sidebar */}
-      <div className="lg:w-64 flex-shrink-0 space-y-4">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">Audit History</h3>
-        <div className="space-y-1">
+      <div className="lg:w-72 flex-shrink-0 space-y-6">
+        <h3 className="text-[10px] font-black text-slate-600 uppercase tracking-widest px-4">Lineage history</h3>
+        <div className="space-y-2">
           {allVersions
             .filter(v => v.groupId === audit.groupId)
             .sort((a, b) => b.version - a.version)
@@ -57,20 +57,20 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
               <button
                 key={v.id}
                 onClick={() => onSelectVersion(v)}
-                className={`w-full p-3 rounded-xl text-left transition-all ${
+                className={`w-full p-4 rounded-2xl text-left transition-all group ${
                   v.id === audit.id 
-                  ? 'bg-indigo-600 text-white shadow-md' 
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-indigo-400'
+                  ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20' 
+                  : 'bg-slate-900 border border-slate-800 text-slate-400 hover:border-slate-600'
                 }`}
               >
                 <div className="flex justify-between items-center">
-                  <span className="font-bold">v{v.version}</span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${v.id === audit.id ? 'bg-indigo-500' : 'bg-slate-100'}`}>
+                  <span className="font-black text-sm">Iteration v{v.version}</span>
+                  <span className={`text-[10px] font-black px-2 py-1 rounded-md ${v.id === audit.id ? 'bg-indigo-500' : 'bg-slate-800'}`}>
                     {v.score}%
                   </span>
                 </div>
-                <p className={`text-[10px] mt-1 ${v.id === audit.id ? 'text-indigo-100' : 'text-slate-400'}`}>
-                  {v.timestamp.toLocaleDateString()}
+                <p className={`text-[10px] mt-2 font-bold opacity-60`}>
+                  Timestamp: {v.timestamp.toLocaleDateString()}
                 </p>
               </button>
             ))}
@@ -78,70 +78,68 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
         {(userRole === UserRole.ADMIN || userRole === UserRole.AUDITOR) && (
           <button 
             onClick={() => onNewVersion(audit)}
-            className="w-full py-3 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-xl font-bold text-sm hover:bg-indigo-100 transition-colors"
+            className="w-full py-4 bg-slate-900 text-indigo-400 border border-slate-800 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors"
           >
-            + Run New Version
+            + Run New Iteration
           </button>
         )}
       </div>
 
-      <div className="flex-1 space-y-8">
+      <div className="flex-1 space-y-10">
         {/* Header Summary */}
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-8 items-center">
-          <div className="relative w-40 h-40 flex items-center justify-center">
+        <div className="bg-slate-900 rounded-[3rem] p-10 border border-slate-800 shadow-2xl flex flex-col md:flex-row gap-10 items-center">
+          <div className="relative w-48 h-48 flex items-center justify-center">
             <svg className="w-full h-full transform -rotate-90">
-              <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-100" />
-              <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" strokeDasharray={439.8} strokeDashoffset={439.8 * (1 - audit.score / 100)} className={`${audit.score > 80 ? 'text-green-500' : audit.score > 50 ? 'text-amber-500' : 'text-red-500'} transition-all duration-1000`} strokeLinecap="round" />
+              <circle cx="96" cy="96" r="84" stroke="#1e293b" strokeWidth="10" fill="transparent" />
+              <circle cx="96" cy="96" r="84" stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray={527.7} strokeDashoffset={527.7 * (1 - audit.score / 100)} className={`${audit.score > 80 ? 'text-green-500' : audit.score > 50 ? 'text-amber-500' : 'text-red-500'} transition-all duration-1000`} strokeLinecap="round" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-3xl font-black text-slate-900">{audit.score}</span>
-              <span className="text-[10px] font-bold text-slate-500 uppercase">Score</span>
+              <span className="text-5xl font-black text-white">{audit.score}</span>
+              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Global Score</span>
             </div>
           </div>
           
-          <div className="flex-1 space-y-4">
-            <div className="flex justify-between items-start">
+          <div className="flex-1 space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-slate-900">{audit.fileName} <span className="text-slate-400 font-medium">v{audit.version}</span></h1>
-                <p className="text-slate-500 font-medium">Framework: {audit.framework} • Analyzed on {audit.timestamp.toLocaleDateString()}</p>
+                <h1 className="text-4xl font-black text-white tracking-tight">{audit.fileName} <span className="text-slate-700 font-bold ml-2">v{audit.version}</span></h1>
+                <p className="text-indigo-400 font-black uppercase tracking-widest text-[10px] mt-1">{audit.framework} Vector Protocol</p>
               </div>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-semibold transition-colors">Export PDF</button>
-              </div>
+              <button className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-black tracking-widest uppercase transition-all">Download Audit PDF</button>
             </div>
-            <p className="text-slate-700 leading-relaxed text-lg">{audit.summary}</p>
+            <p className="text-slate-400 leading-relaxed text-lg font-medium">{audit.summary}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm col-span-1">
-            <h3 className="text-xl font-bold text-slate-900 mb-6">Semantic Risk Breakdown</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="bg-slate-900 rounded-[3rem] p-10 border border-slate-800 shadow-xl col-span-1">
+            <h3 className="text-xl font-black text-white mb-8 tracking-tight">Semantic Vectors</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={audit.riskAnalysis}>
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="label" fontSize={10} />
-                  <Radar name="Risk" dataKey="value" stroke="#4f46e5" fill="#4f46e5" fillOpacity={0.6} />
+                  <PolarGrid stroke="#334155" />
+                  <PolarAngleAxis dataKey="label" fontSize={9} stroke="#64748b" fontWeight="800" />
+                  <Radar name="Risk" dataKey="value" stroke="#6366f1" fill="#6366f1" fillOpacity={0.5} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm col-span-2">
-            <h3 className="text-xl font-bold text-slate-900 mb-6">Critical Findings & Recommendations</h3>
+          <div className="bg-slate-900 rounded-[3rem] p-10 border border-slate-800 shadow-xl col-span-2">
+            <h3 className="text-xl font-black text-white mb-8 tracking-tight">Critical Deviations</h3>
             <div className="space-y-6">
               {audit.findings.map((finding, idx) => (
-                <div key={idx} className="p-6 rounded-2xl border border-slate-100 bg-slate-50 space-y-3">
+                <div key={idx} className="p-8 rounded-[2rem] border border-slate-800 bg-slate-800/20 space-y-4 hover:border-slate-700 transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${getSeverityColor(finding.severity)}`}>
-                      {finding.severity} Severity
+                    <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getSeverityColor(finding.severity)}`}>
+                      {finding.severity} Criticality
                     </span>
-                    <span className="text-sm font-bold text-slate-500">{finding.category}</span>
+                    <span className="text-xs font-black text-slate-500 uppercase tracking-widest">{finding.category}</span>
                   </div>
-                  <h4 className="font-bold text-slate-900 text-lg">{finding.description}</h4>
-                  <div className="pl-4 border-l-4 border-indigo-400">
-                    <p className="text-sm text-slate-600 italic">Recommended Fix:</p>
-                    <p className="text-slate-800 font-medium">{finding.recommendation}</p>
+                  <h4 className="font-black text-white text-xl leading-snug">{finding.description}</h4>
+                  <div className="pl-6 border-l-4 border-indigo-500/50">
+                    <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2 italic">Recommended Remediation</p>
+                    <p className="text-slate-300 font-semibold leading-relaxed">{finding.recommendation}</p>
                   </div>
                 </div>
               ))}
@@ -150,21 +148,26 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
         </div>
       </div>
 
-      {/* Floating Chat Assistant */}
-      <div className="fixed bottom-8 right-8 z-50">
+      {/* Dark Chat Assistant */}
+      <div className="fixed bottom-10 right-10 z-50">
         {chatOpen ? (
-          <div className="w-80 md:w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-slide-up">
-            <div className="bg-indigo-600 p-4 text-white flex justify-between items-center">
-              <span className="font-bold text-sm">Compliance AI Assistant (v{audit.version})</span>
-              <button onClick={() => setChatOpen(false)} className="text-indigo-200 hover:text-white">
+          <div className="w-80 md:w-[420px] h-[600px] bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-800 flex flex-col overflow-hidden animate-slide-up ring-1 ring-white/5">
+            <div className="bg-slate-800 p-6 text-white flex justify-between items-center border-b border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="font-black text-xs uppercase tracking-widest">Compliance AI (Iteration v{audit.version})</span>
+              </div>
+              <button onClick={() => setChatOpen(false)} className="text-slate-500 hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-950/50 scroll-smooth">
               {chatHistory.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${
-                    msg.role === 'user' ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-white text-slate-800 shadow-sm rounded-bl-none border border-slate-100'
+                  <div className={`max-w-[85%] p-4 rounded-2xl text-sm font-medium leading-relaxed ${
+                    msg.role === 'user' 
+                    ? 'bg-indigo-600 text-white rounded-br-none shadow-lg' 
+                    : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
                   }`}>
                     {msg.content}
                   </div>
@@ -172,35 +175,35 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-white p-3 rounded-2xl shadow-sm rounded-bl-none">
-                    <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
-                      <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce delay-100"></div>
-                      <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce delay-200"></div>
+                  <div className="bg-slate-800 p-4 rounded-2xl rounded-bl-none border border-slate-700">
+                    <div className="flex gap-2">
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce delay-100"></div>
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce delay-200"></div>
                     </div>
                   </div>
                 </div>
               )}
             </div>
-            <div className="p-4 bg-white border-t flex gap-2">
+            <div className="p-6 bg-slate-900 border-t border-slate-800 flex gap-3">
               <input 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Ask about v{audit.version}..."
-                className="flex-1 p-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Query v{audit.version} analysis..."
+                className="flex-1 p-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all font-medium"
               />
-              <button onClick={handleSendMessage} className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              <button onClick={handleSendMessage} className="p-4 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition-all flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-600/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </button>
             </div>
           </div>
         ) : (
           <button 
             onClick={() => setChatOpen(true)}
-            className="w-14 h-14 bg-indigo-600 text-white rounded-full shadow-xl hover:bg-indigo-700 flex items-center justify-center transition-all hover:scale-105"
+            className="w-16 h-16 bg-indigo-600 text-white rounded-[2rem] shadow-2xl hover:bg-indigo-500 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-indigo-600/30"
           >
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
           </button>
         )}
       </div>
