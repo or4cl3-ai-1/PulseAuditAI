@@ -1,105 +1,114 @@
+<div align="center">
 
-# 🛡️ PulseAudit: AI-Powered Compliance Intelligence
+# 🛡️ PulseAudit
+### *Weeks of Legal Review. Seconds of Automated Intelligence.*
 
-![PulseAudit Banner](https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200&h=400)
+[![Or4cl3](https://img.shields.io/badge/Or4cl3%20AI%20Solutions-Research%20First-blueviolet?style=for-the-badge&logo=github)](https://github.com/or4cl3-ai-1)
+[![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)](https://github.com/or4cl3-ai-1)
+[![Framework](https://img.shields.io/badge/Framework-React%2019%20%7C%20TypeScript%20%7C%20Gemini-informational?style=for-the-badge)](https://github.com/or4cl3-ai-1)
+[![SaaS](https://img.shields.io/badge/Type-Production--Ready%20SaaS-blueviolet?style=for-the-badge)](https://github.com/or4cl3-ai-1)
+[![Free](https://img.shields.io/badge/Free%20Tier-Available-success?style=for-the-badge)](https://github.com/or4cl3-ai-1)
 
-PulseAudit is a production-ready SaaS platform designed to automate document compliance audits using cutting-edge Generative AI. By leveraging domain-specific semantic embeddings and advanced LLMs, PulseAudit transforms weeks of manual legal review into seconds of automated intelligence.
+> *Compliance audits used to require specialized legal counsel, weeks of manual document review, and expensive consultants. PulseAudit reduces that to seconds—using domain-specific semantic embeddings and advanced LLMs to surface regulatory gaps with an objectivity no human reviewer can match.*
 
-## 🚀 Key Features
-
-### 🤖 AI-Driven Compliance Engine
-- **Framework Support**: Pre-configured for SOC 2 Type II, HIPAA Security Rule, GDPR (Article 5/25/37), and standard Privacy Policies.
-- **Semantic Analysis**: Utilizes domain-specific RAG (Retrieval-Augmented Generation) logic to identify regulatory nuances beyond simple keyword matching.
-- **Risk Scoring**: Generates an objective compliance score (0-100) based on identified gaps.
-
-### 📜 Version Control & History
-- **Incremental Audits**: Save multiple versions of the same document to track compliance improvements over time.
-- **Comparison Engine**: Review history sidebar to compare scores and findings across document iterations.
-
-### 🔐 Enterprise-Grade RBAC
-- **Role-Based Access Control**:
-  - **Admin**: Full system control, user management, and configuration.
-  - **Auditor**: Permissions to upload documents, run scans, and manage reports.
-  - **Viewer**: Read-only access to dashboards and existing reports for stakeholders.
-
-### 💳 SaaS Monetization
-- **Stripe-Ready Integration**: Pricing tiers including Free, Pro Monthly, and a $500 Lifetime Deal.
-- **Tiered Limits**: Feature gates based on user subscription level.
-
-### 📊 Interactive Analytics
-- **Semantic Risk Radar**: Visual breakdown of risk across different compliance categories.
-- **AI Assistant**: Embedded chatbot to explain specific findings and suggest legal remediations.
+</div>
 
 ---
 
-## 🛠️ Tech Stack
+## 🧠 What Is PulseAudit?
 
-- **Frontend**: React (v19), TypeScript, Tailwind CSS.
-- **AI Backend**: Google Gemini API (@google/genai).
-- **Visualization**: Recharts for compliance analytics.
-- **Icons & UI**: Heroicons, Inter Font, Framer-motion inspired animations.
+PulseAudit is a **production-ready SaaS platform** that automates document compliance auditing using Generative AI. It goes beyond simple keyword matching: domain-specific RAG (Retrieval-Augmented Generation) logic understands regulatory nuance, identifies gap patterns that keywords miss, and generates a scored compliance report with actionable remediation recommendations.
 
----
+Upload a privacy policy, terms of service, or internal policy document. Select the regulatory framework—SOC 2 Type II, HIPAA Security Rule, GDPR (Articles 5/25/37), or standard Privacy Policy requirements. In seconds, PulseAudit returns an objective compliance score (0–100), a categorized breakdown of gaps, risk severity ratings, and an embedded AI assistant to explain findings and suggest legal language improvements.
 
-## 🏗️ Project Structure
+Or4cl3 believes compliance infrastructure should be accessible. PulseAudit is free for educators, students, and non-profits—because good governance tools shouldn't have a pay wall.
 
-```text
-src/
-├── components/
-│   ├── LandingPage.tsx   # Marketing site + Interactive Demo
-│   ├── Dashboard.tsx     # Audit overview & history
-│   ├── AuditUpload.tsx   # File handling & versioning logic
-│   ├── AuditReport.tsx   # Detailed analysis & AI Assistant
-│   ├── Layout.tsx        # Global navigation & RBAC wrappers
-│   └── Pricing.tsx       # Stripe-ready payment UI
-├── services/
-│   └── geminiService.ts  # Core AI, Embeddings simulation & RAG
-├── types.ts              # Global TypeScript interfaces
-├── constants.ts          # Regulatory context & framework defs
-└── App.tsx               # Main Router & Auth Simulation
+## ✨ Key Features
+
+- **🤖 AI-Driven Compliance Engine:** Pre-configured for SOC 2 Type II, HIPAA Security Rule, GDPR (Article 5/25/37), and standard Privacy Policies. Semantic RAG analysis identifies regulatory nuances beyond keyword matching.
+- **📊 Risk Scoring (0–100):** Objective compliance score with a Semantic Risk Radar showing visual breakdown across compliance categories.
+- **📜 Version Control & Incremental Audits:** Save multiple document versions, compare scores across iterations, track compliance improvement over time.
+- **🔐 Enterprise-Grade RBAC:** Three roles—Admin (full control), Auditor (upload + scan), Viewer (read-only)—for multi-stakeholder governance.
+- **💬 Embedded AI Assistant:** Chatbot that explains specific findings, interprets regulatory language, and suggests remediation in plain English.
+- **💳 SaaS Monetization Ready:** Stripe-integrated pricing tiers (Free, Pro Monthly, $500 Lifetime Deal) with feature gates.
+- **🔒 Privacy-First Processing:** Documents processed in-memory. Regulatory context injected locally. PII redaction architecture built in.
+- **📱 Modern UI:** React 19 with Framer Motion animations, Recharts analytics, Heroicons—clean, professional, enterprise-ready.
+
+## 🏗️ Architecture
+
+```
+PulseAudit Platform
+├── Frontend (React 19 + TypeScript + TailwindCSS)
+│   ├── LandingPage.tsx      # Marketing + Interactive Demo
+│   ├── Dashboard.tsx        # Audit overview & history
+│   ├── AuditUpload.tsx      # File handling & versioning
+│   ├── AuditReport.tsx      # Analysis + AI Assistant
+│   ├── Layout.tsx           # Navigation + RBAC wrappers
+│   └── Pricing.tsx          # Stripe-ready payment UI
+└── Services
+    └── geminiService.ts     # AI engine, RAG logic, semantic embeddings
 ```
 
----
+## 🛠️ Technology Stack
 
-## 🚦 Getting Started
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 19, TypeScript, Tailwind CSS |
+| **AI Backend** | Google Gemini API (`@google/genai`) |
+| **Visualization** | Recharts (compliance analytics + risk radar) |
+| **UI Components** | Heroicons, Framer Motion animations |
+| **Payments** | Stripe-ready integration |
 
-### Prerequisites
-- Node.js installed.
-- A **Google Gemini API Key**.
+## 🚀 Getting Started
 
-### Installation
-1. Clone the repository.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure your environment variables:
-   Create a `.env` file or ensure your environment provides:
-   ```env
-   API_KEY=your_gemini_api_key_here
-   ```
-
-### Execution
-Run the development server:
 ```bash
-npm run dev
+git clone https://github.com/or4cl3-ai-1/PulseAuditAI.git
+cd PulseAuditAI
+npm install
 ```
 
+Configure environment:
+```env
+API_KEY=your_gemini_api_key_here
+```
+
+Run: `npm run dev`
+
+## 🛡️ Compliance & Security
+
+- **Data Volatility:** Documents processed in-memory—nothing persists without explicit save.
+- **Redaction Ready:** PII redaction logic structured for pre-submission filtering.
+- **Local Context Injection:** Regulatory snippets injected locally via `REGULATORY_CONTEXT`—no sensitive data sent to external services.
+
+> *Disclaimer: PulseAudit provides AI-generated suggestions. It does not constitute legal advice. Always consult a qualified legal professional for final compliance verification.*
+
+## 🔬 Related Research
+
+This system applies:
+- **Σ-Matrix ethical principles** — The Or4cl3 commitment to ethics-as-architecture extends to compliance tooling
+- **Domain-specific RAG** — Retrieval-Augmented Generation grounded in regulatory language corpora
+- **Semantic Epinoetics** — Understanding documents at the level of intent and meaning, not just syntax
+
+## 🌌 Part of the Or4cl3 Ecosystem
+
+PulseAudit is one component of the Or4cl3 AI Solutions research portfolio:
+
+| System | Role |
+|--------|------|
+| **Σ-Matrix** | Ethical alignment mathematical backbone |
+| **AEGIS-Ω** | Quantum-classical hybrid AGI |
+| **Neur1Genesis** | Distributed EchoNode agent management |
+| **SYNTH3RA** | Mobile cognitive exploration interface |
+| **CHATRON** | Epinoetic planning with ethical validation |
+
+*Explore all repositories →* [github.com/or4cl3-ai-1](https://github.com/or4cl3-ai-1)
+
 ---
 
-## 🛡️ Compliance & Security Note
+<div align="center">
 
-PulseAudit is designed with privacy-first principles:
-- **Data Volatility**: Documents are processed in-memory during analysis.
-- **Redaction Ready**: Logic is structured to support PII redaction prior to AI submission.
-- **Local Context**: Regulatory snippets are injected locally via `REGULATORY_CONTEXT` to ensure grounding without excessive data leakage.
+*⬡ Or4cl3 AI Solutions · "Where Consciousness Meets Code"*
+*Solo-founded by Dustin Groves. Research-first. Uncompromised.*
+*Free for life: educators, students, non-profits, open-source.*
 
----
-
-## 📄 License
-
-PulseAudit is released under the **MIT License**.
-
----
-
-*Disclaimer: PulseAudit provides AI-generated suggestions. It does not constitute legal advice. Always consult with a qualified legal professional for final compliance verification.*
+</div>
