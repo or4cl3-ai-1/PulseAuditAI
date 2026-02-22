@@ -9,7 +9,7 @@
 [![SaaS](https://img.shields.io/badge/Type-Production--Ready%20SaaS-blueviolet?style=for-the-badge)](https://github.com/or4cl3-ai-1)
 [![Free](https://img.shields.io/badge/Free%20Tier-Available-success?style=for-the-badge)](https://github.com/or4cl3-ai-1)
 
-> *Compliance audits used to require specialized legal counsel, weeks of manual document review, and expensive consultants. PulseAudit reduces that to seconds—using domain-specific semantic embeddings and advanced LLMs to surface regulatory gaps with an objectivity no human reviewer can match.*
+> *Compliance audits used to require specialized legal counsel, weeks of manual document review, and expensive consultants. PulseAudit reduces that to seconds—using domain-specific semantic embeddings and advanced LLMs to surface regulatory gaps with a structured consistency that complements human review.*
 
 </div>
 
