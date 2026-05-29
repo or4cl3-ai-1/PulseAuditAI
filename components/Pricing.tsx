@@ -10,13 +10,29 @@ interface PricingProps {
 
 const Pricing: React.FC<PricingProps> = ({ onUpgrade, currentTier }) => {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubscribe = (planId: string, tier: UserTier) => {
+  const handleSubscribe = async (planId: string, tier: UserTier, priceId?: string, mode?: string) => {
+    if (!priceId) return; // Free tier — no checkout
     setLoadingPlan(planId);
-    setTimeout(() => {
-      onUpgrade(tier);
+    setError(null);
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId, mode: mode || 'payment' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.');
+        setLoadingPlan(null);
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
       setLoadingPlan(null);
-    }, 1500);
+    }
   };
 
   return (
@@ -71,7 +87,7 @@ const Pricing: React.FC<PricingProps> = ({ onUpgrade, currentTier }) => {
 
               <button
                 disabled={isCurrent || !!loadingPlan}
-                onClick={() => handleSubscribe(plan.id, plan.tier)}
+                onClick={() => handleSubscribe(plan.id, plan.tier, plan.priceId, plan.mode)}
                 className={`w-full py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all ${
                   isCurrent 
                   ? 'bg-slate-800 text-slate-500 cursor-default' 

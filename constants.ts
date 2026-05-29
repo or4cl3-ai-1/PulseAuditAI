@@ -34,7 +34,9 @@ export const PRICING_PLANS = [
     interval: '/mo',
     description: 'For growing compliance teams',
     features: ['Unlimited Scans', 'Deep AI Analysis', 'Priority Support', 'Full CSV/PDF Export'],
-    tier: UserTier.PRO_MONTHLY
+    tier: UserTier.PRO_MONTHLY,
+    priceId: 'price_1TcSlACNzl6cArE760ugSYfb',
+    mode: 'subscription'
   },
   {
     id: 'lifetime',
@@ -44,6 +46,8 @@ export const PRICING_PLANS = [
     description: 'Best for long-term partners',
     features: ['Everything in Pro', 'Lifetime Updates', 'Custom Frameworks', 'Team Access (3 seats)'],
     tier: UserTier.LIFETIME,
-    isPopular: true
+    isPopular: true,
+    priceId: 'price_1TcSlBCNzl6cArE7nVwtsIm7',
+    mode: 'payment'
   }
 ];

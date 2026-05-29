@@ -73,7 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout, onNavigate, c
             </div>
             <span className="text-slate-300 font-bold">PulseAudit</span>
           </div>
-          <p className="text-slate-500 text-sm">© 2024 PulseAudit. Enterprise AI Compliance Engine.</p>
+          <p className="text-slate-500 text-sm">© 2026 PulseAudit. Enterprise AI Compliance Engine.</p>
           <div className="flex gap-6">
             <a href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">Privacy</a>
             <a href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">Terms</a>
