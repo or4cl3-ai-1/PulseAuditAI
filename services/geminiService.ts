@@ -2,7 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { ComplianceAudit, Finding } from "../types";
 import { REGULATORY_CONTEXT } from "../constants";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY || '' });
 
 // Gemma 4 31B — 256K context, clean JSON output, no thinking mode
 const AUDIT_MODEL = "gemma-4-31b-it";
