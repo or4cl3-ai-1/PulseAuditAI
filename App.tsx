@@ -6,11 +6,115 @@ import AuditUpload from './components/AuditUpload';
 import AuditReport from './components/AuditReport';
 import Pricing from './components/Pricing';
 import LandingPage from './components/LandingPage';
-import SovereignSettings from './components/SovereignSettings';
-import AIBom from './components/AIBom';
-import DevNexus from './components/DevNexus';
-import { User, UserTier, UserRole, ComplianceAudit } from './types';
-import { SovereignConfig } from './components/SovereignSettings';
+import DocumentGenerator from './components/DocumentGenerator';
+import { CloudStorage } from './components/CloudStorage';
+import { AuditTemplates, PRESET_TEMPLATES } from './components/AuditTemplates';
+import { User, UserTier, UserRole, ComplianceAudit, AuditTemplate } from './types';
+
+const INITIAL_AUDITS: ComplianceAudit[] = [
+  {
+    id: "aud_eu_ai_1",
+    groupId: "grp_eu_ai",
+    version: 1,
+    userId: "usr_viewer", // Owned by John Stakeholder (usr_viewer)
+    fileName: "Helios_Medical_AI_Router.json",
+    fileType: "document",
+    framework: "EU_AI_ACT",
+    timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+    score: 65,
+    summary: "High-risk medical triaging AI architecture reviewed. Critical risk assessment gaps identified.",
+    findings: [
+      {
+        id: "fnd_eu_1",
+        severity: "critical",
+        category: "Risk Governance",
+        title: "No In-Market Continuous Quality Logs",
+        description: "Post-market monitoring plan (Art 61) lacks automatic tracking parameters for neural model calibration drift.",
+        citation: "EU AI Act Art 61 & Annex IV",
+        remediation: "Deploy continuous telemetry drift logs via cloud cron monitors. Run:\n`aws cloudwatch put-dashboard --dashboard-name HeliosNeuralDrift --dashboard-body file://drift_metrics.json`",
+        status: "pending"
+      },
+      {
+        id: "fnd_eu_2",
+        severity: "high",
+        category: "Transparency",
+        title: "Lack of explicit human-in-the-loop overrides",
+        description: "System documentation does not prove physical intervention steps for triage recommendation actions.",
+        citation: "EU AI Act Art 14",
+        remediation: "Add human supervisor validation gate API routes requiring click token confirmation before dispatch logic.",
+        status: "pending"
+      }
+    ],
+    riskAnalysis: [
+      { label: "Data Quality", value: 60 },
+      { label: "Human Oversight", value: 45 },
+      { label: "Technical Docs", value: 70 },
+      { label: "Accuracy Indices", value: 55 },
+      { label: "Cybersecurity", value: 80 }
+    ],
+    roadmap: [
+      {
+        id: "rd_eu_1",
+        title: "Deploy Continuous Telemetry Monitoring Dashboard",
+        description: "Integrate automatic tracking variables for neural model drift checkups.",
+        impact: "critical",
+        effort: "medium",
+        timeline: "Within 5 days"
+      },
+      {
+        id: "rd_eu_2",
+        title: "Human Override Validation Workflow",
+        description: "Draft supervisor physical click verification steps.",
+        impact: "high",
+        effort: "low",
+        timeline: "Next 2 weeks"
+      }
+    ],
+    executiveBriefing: "During our professional verification of the [Helios_Medical_AI_Router.json] against official EU AI Act compliance milestones, PulseAudit identified two high-impact discrepancies in Quality Governance and Human Oversight.\n\nWhile the underlying technical systems have extremely robust general cybersecurity protections, you must immediately address drift and human intervention checkpoints to align with the regulatory deadlines finalized for August 2, 2026."
+  },
+  {
+    id: "aud_soc2_1",
+    groupId: "grp_soc2",
+    version: 1,
+    userId: "usr_admin", // Owned by Admin
+    fileName: "Corporate_Auth_Policies.pdf",
+    fileType: "document",
+    framework: "SOC2",
+    timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000),
+    score: 88,
+    summary: "Auth system design is secure. Recommended rotation parameters must be enforced automatically.",
+    findings: [
+      {
+        id: "fnd_sc_1",
+        severity: "medium",
+        category: "Logical Access",
+        title: "MFA Rotation Standard Discrepancy",
+        description: "Standard corporate policy does not force session sign-out rotations after consecutive day changes.",
+        citation: "SOC 2 CC6.1",
+        remediation: "Update security context parameters inside backend auth gateways:\n`jwt.sign(payload, SECRET, { expiresIn: '12h' });`",
+        status: "pending"
+      }
+    ],
+    riskAnalysis: [
+      { label: "Access Control", value: 85 },
+      { label: "EncryptionRest", value: 95 },
+      { label: "Logging Auditor", value: 80 },
+      { label: "TransmissionSec", value: 90 },
+      { label: "DisasterControls", value: 85 }
+    ],
+    roadmap: [
+      {
+        id: "rd_sc_1",
+        title: "Session Rotation Auto-Lifespans",
+        description: "Enforce JSON token validity rotations across active gateways.",
+        impact: "medium",
+        effort: "low",
+        timeline: "Within 1 week"
+      }
+    ],
+    executiveBriefing: "The authentication review indicates a secure logical control structure. Only one medium gaps was discovered in rotation protocols.\n\nFulfilling this token change will bring our security measures strictly into alignment with SOC 2 CC6 standards."
+  }
+];
 
 const MOCK_USERS: Record<string, User> = {
   admin: {
@@ -34,92 +138,25 @@ const MOCK_USERS: Record<string, User> = {
     email: 'viewer@pulseaudit.com',
     name: 'John Stakeholder',
     tier: UserTier.FREE,
-    role: UserRole.VIEWER,
-    createdAt: new Date()
+    role: UserRole.CLIENT, // Map John Stakeholder as a CLIENT user
+    createdAt: new Date(),
+    companyName: 'Helios Medical AI Corp'
   }
 };
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState('landing');
   const [user, setUser] = useState<User | null>(null);
-  const [audits, setAudits] = useState<ComplianceAudit[]>([
-    {
-      id: 'demo_001',
-      groupId: 'demo_001',
-      version: 1,
-      userId: 'demo',
-      fileName: 'HealthData_Privacy_v4.pdf',
-      fileType: 'pdf',
-      framework: 'HIPAA',
-      timestamp: new Date('2026-05-28'),
-      score: 72,
-      summary: 'HIPAA compliance audit identified 3 high-severity gaps in technical safeguards.',
-      findings: [
-        {
-          severity: 'high',
-          category: 'Encryption',
-          description: 'At-rest encryption specification missing for PHI endpoints',
-          recommendation: 'Add explicit AES-256 requirement for mobile data storage'
-        },
-        {
-          severity: 'medium',
-          category: 'Access Controls',
-          description: 'Multi-factor authentication policy not documented',
-          recommendation: 'Document MFA requirements for administrative access'
-        },
-        {
-          severity: 'low',
-          category: 'Audit Logs',
-          description: 'Log retention period not specified',
-          recommendation: 'Define 6-year retention per HIPAA requirements'
-        }
-      ],
-      riskAnalysis: [
-        { label: 'Security', value: 68 },
-        { label: 'Privacy', value: 82 },
-        { label: 'Administrative', value: 75 },
-        { label: 'Physical', value: 90 },
-        { label: 'Technical', value: 65 }
-      ]
-    },
-    {
-      id: 'demo_002',
-      groupId: 'demo_002',
-      version: 1,
-      userId: 'demo',
-      fileName: 'Cloud_Security_Policy.docx',
-      fileType: 'docx',
-      framework: 'SOC2',
-      timestamp: new Date('2026-05-29'),
-      score: 88,
-      summary: 'SOC 2 Type II assessment shows strong security posture with minor gaps.',
-      findings: [
-        {
-          severity: 'medium',
-          category: 'Availability',
-          description: 'Backup recovery testing frequency not documented',
-          recommendation: 'Document quarterly DR testing schedule'
-        },
-        {
-          severity: 'low',
-          category: 'Confidentiality',
-          description: 'Data classification scheme could be more granular',
-          recommendation: 'Add sensitivity labels for internal use data'
-        }
-      ],
-      riskAnalysis: [
-        { label: 'Security', value: 92 },
-        { label: 'Availability', value: 85 },
-        { label: 'Processing', value: 90 },
-        { label: 'Confidentiality', value: 88 },
-        { label: 'Privacy', value: 86 }
-      ]
-    }
-  ]);
+  const [audits, setAudits] = useState<ComplianceAudit[]>(INITIAL_AUDITS);
   const [selectedAudit, setSelectedAudit] = useState<ComplianceAudit | null>(null);
   const [isAuth, setIsAuth] = useState(false);
   const [uploadTarget, setUploadTarget] = useState<ComplianceAudit | undefined>(undefined);
-  const [sovereignConfig, setSovereignConfig] = useState<SovereignConfig | undefined>(undefined);
+
+  // Storage & Templates states
+  const [savedTemplates, setSavedTemplates] = useState<AuditTemplate[]>([]);
+  const [activeTemplate, setActiveTemplate] = useState<AuditTemplate | null>(null);
+  const [preloadedFileName, setPreloadedFileName] = useState<string | null>(null);
+  const [preloadedFileContent, setPreloadedFileContent] = useState<string | null>(null);
 
   const handleLogin = (roleKey: string = 'admin') => {
     setUser(MOCK_USERS[roleKey] || MOCK_USERS.admin);
@@ -134,10 +171,16 @@ const App: React.FC = () => {
   };
 
   const handleAuditComplete = (newAudit: ComplianceAudit) => {
-    setAudits(prev => [newAudit, ...prev]);
-    setSelectedAudit(newAudit);
+    // Force assign the logged-in user id to the audit report
+    const auditWithOwner = {
+      ...newAudit,
+      userId: user?.id || 'usr_admin'
+    };
+    setAudits(prev => [auditWithOwner, ...prev]);
+    setSelectedAudit(auditWithOwner);
     setCurrentView('report');
     setUploadTarget(undefined);
+    setActiveTemplate(null);
   };
 
   const handleUpgrade = (tier: UserTier) => {
@@ -148,36 +191,36 @@ const App: React.FC = () => {
     // If we're on a private view but not authenticated, show role selector (mock auth)
     if (!isAuth && currentView !== 'landing') {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-          <div className="max-w-md w-full bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-200 text-center space-y-8">
-            <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-indigo-100">
+        <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4 selection:bg-indigo-900 selection:text-white">
+          <div className="max-w-md w-full bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl border border-slate-800 text-center space-y-8">
+            <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-indigo-550/20">
               <span className="text-white font-black text-3xl">P</span>
             </div>
             <div className="space-y-2">
-              <h2 className="text-3xl font-black text-slate-900">Welcome Back</h2>
-              <p className="text-slate-500 font-medium">Select a role to preview the PulseAudit experience.</p>
+              <h2 className="text-3xl font-black text-white tracking-tight">Welcome Back</h2>
+              <p className="text-slate-400 font-semibold text-sm">Select an authentication profile to unlock security layers.</p>
             </div>
             <div className="grid grid-cols-1 gap-3">
               <button 
                 onClick={() => handleLogin('admin')} 
-                className="p-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all hover:scale-[1.02] shadow-lg shadow-indigo-100 flex items-center justify-between"
+                className="p-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all hover:scale-[1.02] flex items-center justify-between"
               >
                 <span>Login as Admin</span>
-                <span className="text-[10px] uppercase bg-white/20 px-2 py-1 rounded">Full Control</span>
+                <span className="text-[10px] bg-white/20 px-2 py-1 rounded font-black tracking-wider uppercase">Full Control</span>
               </button>
               <button 
                 onClick={() => handleLogin('auditor')} 
-                className="p-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-900 transition-all hover:scale-[1.02] flex items-center justify-between"
+                className="p-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all hover:scale-[1.02] flex items-center justify-between border border-slate-700/65"
               >
                 <span>Login as Auditor</span>
-                <span className="text-[10px] uppercase bg-white/20 px-2 py-1 rounded">Scans & Reports</span>
+                <span className="text-[10px] bg-teal-400/20 text-teal-400 px-2 py-1 rounded font-black tracking-wider uppercase">Lead Auditor</span>
               </button>
               <button 
                 onClick={() => handleLogin('viewer')} 
-                className="p-4 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-all hover:scale-[1.02] flex items-center justify-between border border-slate-200"
+                className="p-4 bg-slate-950 hover:bg-slate-900 text-slate-300 rounded-xl font-bold transition-all hover:scale-[1.02] flex items-center justify-between border border-slate-800/80"
               >
-                <span>Login as Viewer</span>
-                <span className="text-[10px] uppercase bg-slate-400/20 px-2 py-1 rounded">Read Only</span>
+                <span>Login as Client</span>
+                <span className="text-[10px] bg-amber-400/20 text-amber-300 px-2 py-1 rounded font-black tracking-wider uppercase">Client Portal</span>
               </button>
             </div>
           </div>
@@ -191,15 +234,43 @@ const App: React.FC = () => {
       case 'dashboard':
         return <Dashboard 
           audits={audits} 
+          user={user}
           onSelectAudit={(a) => { setSelectedAudit(a); setCurrentView('report'); }} 
-          onNewAudit={() => { setUploadTarget(undefined); setCurrentView('upload'); }} 
+          onNewAudit={() => { setUploadTarget(undefined); setActiveTemplate(null); setPreloadedFileName(null); setPreloadedFileContent(null); setCurrentView('upload'); }} 
         />;
       case 'upload':
         return <AuditUpload 
-          onAuditComplete={handleAuditComplete}
-          onBack={() => setCurrentView('dashboard')}
-          userRole={user?.role || UserRole.VIEWER} 
+          onAuditComplete={handleAuditComplete} 
+          userRole={user?.role || UserRole.CLIENT} 
           existingAudit={uploadTarget}
+          activeTemplate={activeTemplate}
+          preloadedFileName={preloadedFileName}
+          preloadedFileContent={preloadedFileContent}
+          clearPreloads={() => { setPreloadedFileName(null); setPreloadedFileContent(null); }}
+        />;
+      case 'generator':
+        return <DocumentGenerator userTier={user?.tier || UserTier.FREE} />;
+      case 'storage':
+        return <CloudStorage 
+          userRole={user?.role || UserRole.CLIENT} 
+          onSelectFileForAudit={(name, content) => {
+            setPreloadedFileName(name);
+            setPreloadedFileContent(content);
+            setActiveTemplate(null);
+            setCurrentView('upload');
+          }}
+        />;
+      case 'templates':
+        return <AuditTemplates 
+          userRole={user?.role || UserRole.CLIENT}
+          onApplyTemplate={(tmpl) => {
+            setActiveTemplate(tmpl);
+            setPreloadedFileName(null);
+            setPreloadedFileContent(null);
+            setCurrentView('upload');
+          }}
+          savedTemplates={savedTemplates}
+          onChangeTemplates={setSavedTemplates}
         />;
       case 'report':
         return selectedAudit ? (
@@ -208,25 +279,18 @@ const App: React.FC = () => {
             allVersions={audits} 
             onSelectVersion={setSelectedAudit}
             onNewVersion={(v) => { setUploadTarget(v); setCurrentView('upload'); }}
-            onBack={() => setCurrentView('dashboard')}
-            userRole={user?.role || UserRole.VIEWER}
+            userRole={user?.role || UserRole.CLIENT}
           />
-        ) : <div className="p-20 text-center">No report selected.</div>;
+        ) : <div className="p-20 text-center bg-slate-950 text-slate-400 font-bold">No report selected.</div>;
       case 'pricing':
         return <Pricing onUpgrade={handleUpgrade} currentTier={user?.tier || UserTier.FREE} />;
-      case 'sovereign':
-        return <SovereignSettings onSave={(c) => { setSovereignConfig(c); setCurrentView('dashboard'); }} currentConfig={sovereignConfig} />;
-      case 'ai-bom':
-        return <AIBom />;
-      case 'dev-nexus':
-        return <DevNexus />;
       default:
         return <div>404</div>;
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 selection:bg-indigo-100">
+    <div className="min-h-screen bg-white selection:bg-indigo-100">
       {isAuth ? (
         <Layout user={user} onLogout={handleLogout} onNavigate={setCurrentView} currentView={currentView}>
           {renderView()}

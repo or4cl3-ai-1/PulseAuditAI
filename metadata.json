@@ -3,5 +3,8 @@
   "description": "A production-ready SaaS for automated compliance audits of privacy policies and legal documents using AI.",
   "requestFramePermissions": [
     "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]
 }
