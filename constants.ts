@@ -47,7 +47,7 @@ export const PRICING_PLANS = [
     features: ['Everything in Pro', 'Lifetime Updates', 'Custom Frameworks', 'Team Access (3 seats)'],
     tier: UserTier.LIFETIME,
     isPopular: true,
-    priceId: 'price_1TcSnGCNzl6cArE7jLLhuysR',
+    priceId: 'price_1TdOvsCNzl6cArE7u1BTyFvS',
     mode: 'payment'
   }
 ];
