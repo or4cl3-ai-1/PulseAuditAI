@@ -10,6 +10,27 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   const [demoStep, setDemoStep] = useState<'idle' | 'uploading' | 'result'>('idle');
   const [demoProgress, setDemoProgress] = useState(0);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handleCheckout = async (planId: string, priceId?: string) => {
+    if (!priceId) return;
+    setLoadingPlan(planId);
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId, mode: 'payment' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setLoadingPlan(null);
+      }
+    } catch (err) {
+      setLoadingPlan(null);
+    }
+  };
 
   const runDemo = () => {
     setDemoStep('uploading');
@@ -269,10 +290,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                   </div>
                 ))}
               </div>
-              <a
-                href={plan.priceId ? `#` : '#'}
-                onClick={(e) => { e.preventDefault(); plan.priceId ? window.location.href = '/pricing' : null; }}
-                className={`w-full py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-center block ${
+              <button
+                disabled={!plan.priceId || !!loadingPlan}
+                onClick={() => handleCheckout(plan.id, plan.priceId)}
+                className={`w-full py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-center ${
                   !plan.priceId
                     ? 'bg-slate-800 text-slate-500 cursor-default'
                     : plan.isPopular
@@ -280,8 +301,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                       : 'bg-white text-slate-900 hover:bg-slate-200'
                 }`}
               >
-                {!plan.priceId ? 'Free — No Card Required' : plan.isPopular ? 'Get Founders Pass' : 'Start Pro'}
-              </a>
+                {loadingPlan === plan.id ? 'Loading...' : (!plan.priceId ? 'Free — No Card Required' : plan.isPopular ? 'Get Founders Pass' : 'Start Pro')}
+              </button>
             </div>
           ))}
         </div>
