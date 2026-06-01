@@ -9,10 +9,11 @@ interface AuditReportProps {
   allVersions: ComplianceAudit[];
   onSelectVersion: (audit: ComplianceAudit) => void;
   onNewVersion: (audit: ComplianceAudit) => void;
+  onBack?: () => void;
   userRole: UserRole;
 }
 
-const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectVersion, onNewVersion, userRole }) => {
+const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectVersion, onNewVersion, onBack, userRole }) => {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -46,6 +47,18 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-8 space-y-10 pb-40 flex flex-col lg:flex-row gap-10 bg-slate-950 text-white">
+      {/* Back nav */}
+      {onBack && (
+        <div className="w-full">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-slate-400 hover:text-white font-bold text-sm transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path></svg>
+            Back to Dashboard
+          </button>
+        </div>
+      )}
       {/* Version Sidebar */}
       <div className="lg:w-72 flex-shrink-0 space-y-6">
         <h3 className="text-[10px] font-black text-slate-600 uppercase tracking-widest px-4">Lineage history</h3>

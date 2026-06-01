@@ -6,11 +6,12 @@ import { ComplianceAudit, UserRole } from '../types';
 
 interface AuditUploadProps {
   onAuditComplete: (audit: ComplianceAudit) => void;
+  onBack?: () => void;
   userRole: UserRole;
   existingAudit?: ComplianceAudit;
 }
 
-const AuditUpload: React.FC<AuditUploadProps> = ({ onAuditComplete, userRole, existingAudit }) => {
+const AuditUpload: React.FC<AuditUploadProps> = ({ onAuditComplete, onBack, userRole, existingAudit }) => {
   const [file, setFile] = useState<File | null>(null);
   const [framework, setFramework] = useState(existingAudit?.framework || FRAMEWORKS[0].id);
   const [isUploading, setIsUploading] = useState(false);
@@ -78,6 +79,15 @@ const AuditUpload: React.FC<AuditUploadProps> = ({ onAuditComplete, userRole, ex
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-12 pb-32">
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-slate-400 hover:text-white font-bold text-sm mb-6 transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path></svg>
+          Back to Dashboard
+        </button>
+      )}
       <div className="bg-slate-900 rounded-[3rem] shadow-2xl border border-slate-800 p-12 space-y-12">
         <div className="space-y-2">
           <h2 className="text-4xl font-black text-white tracking-tight">

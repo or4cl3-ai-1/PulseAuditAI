@@ -42,7 +42,80 @@ const MOCK_USERS: Record<string, User> = {
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState('landing');
   const [user, setUser] = useState<User | null>(null);
-  const [audits, setAudits] = useState<ComplianceAudit[]>([]);
+  const [audits, setAudits] = useState<ComplianceAudit[]>([
+    {
+      id: 'demo_001',
+      groupId: 'demo_001',
+      version: 1,
+      userId: 'demo',
+      fileName: 'HealthData_Privacy_v4.pdf',
+      fileType: 'pdf',
+      framework: 'HIPAA',
+      timestamp: new Date('2026-05-28'),
+      score: 72,
+      summary: 'HIPAA compliance audit identified 3 high-severity gaps in technical safeguards.',
+      findings: [
+        {
+          severity: 'high',
+          category: 'Encryption',
+          description: 'At-rest encryption specification missing for PHI endpoints',
+          recommendation: 'Add explicit AES-256 requirement for mobile data storage'
+        },
+        {
+          severity: 'medium',
+          category: 'Access Controls',
+          description: 'Multi-factor authentication policy not documented',
+          recommendation: 'Document MFA requirements for administrative access'
+        },
+        {
+          severity: 'low',
+          category: 'Audit Logs',
+          description: 'Log retention period not specified',
+          recommendation: 'Define 6-year retention per HIPAA requirements'
+        }
+      ],
+      riskAnalysis: [
+        { label: 'Security', value: 68 },
+        { label: 'Privacy', value: 82 },
+        { label: 'Administrative', value: 75 },
+        { label: 'Physical', value: 90 },
+        { label: 'Technical', value: 65 }
+      ]
+    },
+    {
+      id: 'demo_002',
+      groupId: 'demo_002',
+      version: 1,
+      userId: 'demo',
+      fileName: 'Cloud_Security_Policy.docx',
+      fileType: 'docx',
+      framework: 'SOC2',
+      timestamp: new Date('2026-05-29'),
+      score: 88,
+      summary: 'SOC 2 Type II assessment shows strong security posture with minor gaps.',
+      findings: [
+        {
+          severity: 'medium',
+          category: 'Availability',
+          description: 'Backup recovery testing frequency not documented',
+          recommendation: 'Document quarterly DR testing schedule'
+        },
+        {
+          severity: 'low',
+          category: 'Confidentiality',
+          description: 'Data classification scheme could be more granular',
+          recommendation: 'Add sensitivity labels for internal use data'
+        }
+      ],
+      riskAnalysis: [
+        { label: 'Security', value: 92 },
+        { label: 'Availability', value: 85 },
+        { label: 'Processing', value: 90 },
+        { label: 'Confidentiality', value: 88 },
+        { label: 'Privacy', value: 86 }
+      ]
+    }
+  ]);
   const [selectedAudit, setSelectedAudit] = useState<ComplianceAudit | null>(null);
   const [isAuth, setIsAuth] = useState(false);
   const [uploadTarget, setUploadTarget] = useState<ComplianceAudit | undefined>(undefined);
@@ -123,7 +196,8 @@ const App: React.FC = () => {
         />;
       case 'upload':
         return <AuditUpload 
-          onAuditComplete={handleAuditComplete} 
+          onAuditComplete={handleAuditComplete}
+          onBack={() => setCurrentView('dashboard')}
           userRole={user?.role || UserRole.VIEWER} 
           existingAudit={uploadTarget}
         />;
@@ -134,6 +208,7 @@ const App: React.FC = () => {
             allVersions={audits} 
             onSelectVersion={setSelectedAudit}
             onNewVersion={(v) => { setUploadTarget(v); setCurrentView('upload'); }}
+            onBack={() => setCurrentView('dashboard')}
             userRole={user?.role || UserRole.VIEWER}
           />
         ) : <div className="p-20 text-center">No report selected.</div>;
@@ -151,7 +226,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white selection:bg-indigo-100">
+    <div className="min-h-screen bg-slate-950 selection:bg-indigo-100">
       {isAuth ? (
         <Layout user={user} onLogout={handleLogout} onNavigate={setCurrentView} currentView={currentView}>
           {renderView()}
