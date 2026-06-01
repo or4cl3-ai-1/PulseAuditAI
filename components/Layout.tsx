@@ -25,7 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout, onNavigate, c
             <span className="font-bold text-xl text-white tracking-tight">{APP_NAME}</span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             <button 
               onClick={() => onNavigate('dashboard')}
               className={`text-sm font-semibold transition-colors ${currentView === 'dashboard' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'}`}
@@ -37,6 +37,24 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout, onNavigate, c
               className={`text-sm font-semibold transition-colors ${currentView === 'upload' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'}`}
             >
               New Audit
+            </button>
+            <button 
+              onClick={() => onNavigate('ai-bom')}
+              className={`text-sm font-semibold transition-colors ${currentView === 'ai-bom' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'}`}
+            >
+              AI BOM
+            </button>
+            <button 
+              onClick={() => onNavigate('dev-nexus')}
+              className={`text-sm font-semibold transition-colors ${currentView === 'dev-nexus' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'}`}
+            >
+              Dev Tools
+            </button>
+            <button 
+              onClick={() => onNavigate('sovereign')}
+              className={`text-sm font-semibold transition-colors ${currentView === 'sovereign' ? 'text-indigo-400' : 'text-slate-400 hover:text-white'}`}
+            >
+              Sovereign
             </button>
             <button 
               onClick={() => onNavigate('pricing')}

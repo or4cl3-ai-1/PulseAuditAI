@@ -6,7 +6,11 @@ import AuditUpload from './components/AuditUpload';
 import AuditReport from './components/AuditReport';
 import Pricing from './components/Pricing';
 import LandingPage from './components/LandingPage';
+import SovereignSettings from './components/SovereignSettings';
+import AIBom from './components/AIBom';
+import DevNexus from './components/DevNexus';
 import { User, UserTier, UserRole, ComplianceAudit } from './types';
+import { SovereignConfig } from './components/SovereignSettings';
 
 const MOCK_USERS: Record<string, User> = {
   admin: {
@@ -42,6 +46,7 @@ const App: React.FC = () => {
   const [selectedAudit, setSelectedAudit] = useState<ComplianceAudit | null>(null);
   const [isAuth, setIsAuth] = useState(false);
   const [uploadTarget, setUploadTarget] = useState<ComplianceAudit | undefined>(undefined);
+  const [sovereignConfig, setSovereignConfig] = useState<SovereignConfig | undefined>(undefined);
 
   const handleLogin = (roleKey: string = 'admin') => {
     setUser(MOCK_USERS[roleKey] || MOCK_USERS.admin);
@@ -134,6 +139,12 @@ const App: React.FC = () => {
         ) : <div className="p-20 text-center">No report selected.</div>;
       case 'pricing':
         return <Pricing onUpgrade={handleUpgrade} currentTier={user?.tier || UserTier.FREE} />;
+      case 'sovereign':
+        return <SovereignSettings onSave={(c) => { setSovereignConfig(c); setCurrentView('dashboard'); }} currentConfig={sovereignConfig} />;
+      case 'ai-bom':
+        return <AIBom />;
+      case 'dev-nexus':
+        return <DevNexus />;
       default:
         return <div>404</div>;
     }
