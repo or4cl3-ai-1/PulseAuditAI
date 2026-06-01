@@ -41,7 +41,7 @@ export const PRICING_PLANS = [
   {
     id: 'lifetime',
     name: 'Founders Pass',
-    price: '$299',
+    price: '$250',
     interval: 'one-time',
     description: 'Lock in lifetime access at launch pricing',
     features: ['Everything in Pro', 'Lifetime Updates', 'Custom Frameworks', 'Team Access (3 seats)'],
