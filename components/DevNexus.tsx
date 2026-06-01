@@ -28,7 +28,7 @@ const DevNexus: React.FC = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto p-8">
+    <div className="max-w-5xl mx-auto p-4 sm:p-8">
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 mb-4">
           Compliance-as-Code
@@ -40,18 +40,18 @@ const DevNexus: React.FC = () => {
       </div>
 
       {/* Install */}
-      <div className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 mb-8">
+      <div className="p-4 sm:p-6 bg-slate-900/50 rounded-2xl border border-slate-800 mb-6 sm:mb-8">
         <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Install</p>
         <CodeBlock id="install" code="npm install -g @pulseaudit/cli\n# or\nnpx @pulseaudit/cli@latest" />
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto pb-1">
         {TABS.map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all ${
+            className={`px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all whitespace-nowrap ${
               activeTab === tab
                 ? 'bg-indigo-600 text-white'
                 : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'

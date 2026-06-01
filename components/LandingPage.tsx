@@ -56,7 +56,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   return (
     <div className="bg-slate-950 text-white overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 lg:pt-52 lg:pb-40">
+      <section className="relative pt-20 pb-16 sm:pt-32 sm:pb-24 lg:pt-52 lg:pb-40">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-gradient-to-b from-indigo-500/10 via-transparent to-transparent opacity-50 blur-[120px]"></div>
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-violet-600/20 rounded-full blur-[100px]"></div>
@@ -68,13 +68,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             <span className="flex h-2 w-2 rounded-full bg-indigo-500"></span>
             Version 3.0 Production Ready
           </div>
-          <h1 className="text-6xl md:text-[92px] font-black tracking-tight leading-[0.9] mb-10">
+          <h1 className="text-4xl sm:text-6xl md:text-[92px] font-black tracking-tight leading-[0.9] mb-8 sm:mb-10">
             Compliance at <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-400 bg-[length:200%_auto] animate-gradient">
               Computational Speed
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-400 font-medium max-w-3xl mx-auto leading-relaxed mb-14">
+          <p className="text-base sm:text-xl md:text-2xl text-slate-400 font-medium max-w-3xl mx-auto leading-relaxed mb-10 sm:mb-14">
             Audit complex regulatory documents in seconds. Harness domain-specific embeddings to identify hidden risks in SOC 2, HIPAA, and GDPR policies.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">

@@ -96,9 +96,9 @@ const AIBom: React.FC = () => {
   const article50Count = models.filter(m => m.article50Applicable).length;
 
   return (
-    <div className="max-w-6xl mx-auto p-8">
+    <div className="max-w-6xl mx-auto p-4 sm:p-8">
       {/* Header */}
-      <div className="flex items-start justify-between mb-10">
+      <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-4 mb-6 sm:mb-10">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 text-amber-400 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-500/20 mb-4">
             EU AI Act — August 2, 2026
@@ -108,16 +108,16 @@ const AIBom: React.FC = () => {
             Machine-readable inventory of all AI models in production. Required under Article 53 Technical Documentation.
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 w-full sm:w-auto">
           <button
             onClick={handleExportBOM}
-            className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-500 transition-all"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm active:bg-indigo-500 transition-all"
           >
-            Export BOM (JSON)
+            Export BOM
           </button>
           <button
             onClick={() => setShowAdd(true)}
-            className="px-6 py-3 bg-slate-800 text-white rounded-xl font-bold text-sm hover:bg-slate-700 transition-all"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-3 bg-slate-800 text-white rounded-xl font-bold text-sm active:bg-slate-700 transition-all"
           >
             + Add Model
           </button>
@@ -125,25 +125,25 @@ const AIBom: React.FC = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <div className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total Models</p>
-          <p className="text-4xl font-black text-white">{models.length}</p>
+      <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-10">
+        <div className="p-4 sm:p-6 bg-slate-900/50 rounded-2xl border border-slate-800">
+          <p className="text-[8px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 sm:mb-2">Total</p>
+          <p className="text-3xl sm:text-4xl font-black text-white">{models.length}</p>
         </div>
-        <div className="p-6 bg-red-500/5 rounded-2xl border border-red-500/20">
-          <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-2">Annex III High-Risk</p>
-          <p className="text-4xl font-black text-red-400">{highRiskCount}</p>
+        <div className="p-4 sm:p-6 bg-red-500/5 rounded-2xl border border-red-500/20">
+          <p className="text-[8px] sm:text-[10px] font-black text-red-400 uppercase tracking-widest mb-1 sm:mb-2">High-Risk</p>
+          <p className="text-3xl sm:text-4xl font-black text-red-400">{highRiskCount}</p>
         </div>
-        <div className="p-6 bg-amber-500/5 rounded-2xl border border-amber-500/20">
-          <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest mb-2">Article 50 Required</p>
-          <p className="text-4xl font-black text-amber-400">{article50Count}</p>
+        <div className="p-4 sm:p-6 bg-amber-500/5 rounded-2xl border border-amber-500/20">
+          <p className="text-[8px] sm:text-[10px] font-black text-amber-400 uppercase tracking-widest mb-1 sm:mb-2">Art. 50</p>
+          <p className="text-3xl sm:text-4xl font-black text-amber-400">{article50Count}</p>
         </div>
       </div>
 
       {/* Models List */}
       <div className="space-y-4 mb-8">
         {models.map((model) => (
-          <div key={model.id} className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 hover:border-slate-600 transition-all">
+          <div key={model.id} className="p-4 sm:p-6 bg-slate-900/50 rounded-2xl border border-slate-800 active:border-slate-600 transition-all">
             <div className="flex items-start justify-between mb-4">
               <div>
                 <div className="flex items-center gap-3 mb-1">

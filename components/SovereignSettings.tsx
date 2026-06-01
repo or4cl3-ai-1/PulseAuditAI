@@ -27,8 +27,8 @@ const SovereignSettings: React.FC<SovereignSettingsProps> = ({ onSave, currentCo
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <div className="mb-10">
+    <div className="max-w-4xl mx-auto p-4 sm:p-8">
+      <div className="mb-6 sm:mb-10">
         <h2 className="text-4xl font-black text-white mb-3">Sovereign Mode</h2>
         <p className="text-slate-400 font-medium">
           Keep sensitive audit logs within your infrastructure. Zero secondary data egress.
