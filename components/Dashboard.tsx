@@ -48,31 +48,7 @@ const Dashboard: React.FC<DashboardProps> = ({ audits: rawAudits, user, onSelect
   const isClient = user?.role === UserRole.CLIENT;
   const audits = isClient ? rawAudits.filter(a => a.userId === user?.id) : rawAudits;
 
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [syncLogs, setSyncLogs] = useState<string[]>(["[09:30:15] Supabase streaming initialized.", "[09:30:15] Security row-level logic (RLS) enforcement online."]);
   const [activeWarningTab, setActiveWarningTab] = useState<'critical' | 'all'>('critical');
-
-  // Trigger simulated PostgreSQL/Supabase real-time sync with random state adjustments!
-  const triggerRealtimeSync = () => {
-    setIsSyncing(true);
-    const msgs = [
-      "Securing analytical boundaries...",
-      "Polling PostgreSQL Write-Ahead Logs (WAL)...",
-      "Broadcasting updated metrics to developer terminals...",
-      "Sync complete. Posture trajectory stable."
-    ];
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < msgs.length) {
-        const time = new Date().toLocaleTimeString();
-        setSyncLogs(prev => [`[${time}] ${msgs[i]}`, ...prev].slice(0, 8));
-        i++;
-      } else {
-        clearInterval(interval);
-        setIsSyncing(false);
-      }
-    }, 600);
-  };
 
   // Generate simulated chart datasets derived organically from actual audits list
   // or elegant defaults to demonstrate full platform aesthetics on first launch
@@ -144,15 +120,15 @@ const Dashboard: React.FC<DashboardProps> = ({ audits: rawAudits, user, onSelect
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-8 space-y-12 py-12 bg-slate-950 text-white leading-relaxed">
       
-      {/* Title block with persistent streaming syncer indicator */}
+      {/* Title block with persistent evaluation engine indicator */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-slate-900/40 p-8 rounded-[2.5rem] border border-slate-800/80 backdrop-blur-sm">
         <div>
           <div className="flex items-center gap-3">
-            <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
-            <span className="text-[10px] uppercase font-black tracking-[0.2em] text-green-400 font-mono">SUPABASE DB LIVE-STREAM SYNCED</span>
+            <span className="text-[10px] uppercase font-black tracking-[0.2em] text-indigo-400 font-mono">COGNITIVE COMPLIANCE ENGINE ACTIVE</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mt-2">
             {isClient ? `${user?.companyName || 'Corporate Client'} Console` : 'Compliance Intelligence'}
@@ -162,26 +138,17 @@ const Dashboard: React.FC<DashboardProps> = ({ audits: rawAudits, user, onSelect
           </p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <button 
-            onClick={triggerRealtimeSync}
-            disabled={isSyncing}
-            className={`px-5 py-3.5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 font-bold text-xs flex items-center gap-2 transition-all cursor-pointer ${isSyncing ? 'text-indigo-400 opacity-60' : 'text-slate-200'}`}
-          >
-            <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
-            Sync Real-Time State
-          </button>
-          
           {!isClient ? (
             <button 
               onClick={onNewAudit}
-              className="flex-1 md:flex-none bg-indigo-600 hover:bg-indigo-500 text-white px-7 py-3.5 rounded-xl font-black shadow-lg shadow-indigo-600/15 text-xs tracking-widest uppercase transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+              className="flex-1 md:flex-none bg-indigo-600 hover:bg-indigo-500 text-white px-7 py-3.5 rounded-xl font-black shadow-lg shadow-indigo-600/15 text-xs tracking-widest uppercase transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               Initialize Scan
             </button>
           ) : (
-            <div className="flex items-center gap-2 p-3 bg-indigo-950/20 text-indigo-400 border border-indigo-500/20 text-xs font-black uppercase rounded-xl tracking-wider">
-              <Key className="w-4 h-4" />
+            <div className="flex items-center gap-2 p-3.5 bg-slate-900 border border-slate-800 text-slate-300 text-xs font-black uppercase rounded-xl tracking-wider">
+              <Key className="w-4 h-4 text-indigo-400" />
               Secure Client Feed Only
             </div>
           )}
@@ -391,7 +358,7 @@ const Dashboard: React.FC<DashboardProps> = ({ audits: rawAudits, user, onSelect
 
       </div>
 
-      {/* Grid: Document Registry & Supabase Streaming Logs */}
+      {/* Grid: Document Registry & Active Framework Benchmarks */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Document Registry Registry */}
@@ -473,28 +440,45 @@ const Dashboard: React.FC<DashboardProps> = ({ audits: rawAudits, user, onSelect
           )}
         </div>
 
-        {/* Real-time Streaming Logs panel */}
+        {/* Regulatory Standards Baseline List */}
         <div className="bg-slate-900 rounded-[2.5rem] p-8 border border-slate-800 shadow-xl flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-black text-white tracking-tight">Sync Stream Telemetry</h3>
-              <span className={`h-2.5 w-2.5 rounded-full ${isSyncing ? 'bg-indigo-400 animate-pulse' : 'bg-green-400 animate-pulse'}`}></span>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-black text-white tracking-tight">Active Benchmarks</h3>
+              <span className="text-[9px] font-mono bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded">Targeted Standards</span>
             </div>
             <p className="text-xs text-slate-400 font-semibold mb-6">
-              PostgreSQL Log Events & row-level security monitoring telemetry.
+              Primary regulatory frameworks enforced across active audit sets.
             </p>
-            <div className="space-y-3 font-mono text-[10px] leading-relaxed max-h-72 overflow-y-auto pr-2">
-              {syncLogs.map((log, idx) => (
-                <div key={idx} className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-slate-400 flex items-start gap-2">
-                  <span className="text-indigo-400 font-black flex-shrink-0">&gt;&gt;</span>
-                  <span>{log}</span>
-                </div>
-              ))}
+            <div className="space-y-3 max-h-72 overflow-y-auto pr-2">
+              {FRAMEWORKS.map((fw) => {
+                const auditsOfFramework = audits.filter(a => a.framework === fw.id);
+                return (
+                  <div key={fw.id} className="p-4 bg-slate-950 rounded-2xl border border-slate-850 flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full" />
+                        <h4 className="font-bold text-xs text-white uppercase">{fw.name}</h4>
+                      </div>
+                      <p className="text-[10px] text-slate-400 font-medium leading-relaxed">{fw.description}</p>
+                    </div>
+                    {auditsOfFramework.length > 0 ? (
+                      <span className="text-[9px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded font-black whitespace-nowrap">
+                        {auditsOfFramework.length} {auditsOfFramework.length === 1 ? 'Record' : 'Records'}
+                      </span>
+                    ) : (
+                      <span className="text-[9px] font-mono text-slate-500 bg-slate-900 border border-slate-850 px-2 py-0.5 rounded whitespace-nowrap">
+                        Inactive
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
-          <div className="pt-6 border-t border-slate-800/80 mt-6 text-center">
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-              August 2, 2026 Enforcement Roadmaps Activated
+          <div className="pt-6 border-t border-slate-800 mt-6 text-center">
+            <span className="text-[10px] font-bold text-slate-505 uppercase tracking-widest font-mono">
+              Continuous Ingestion Engine
             </span>
           </div>
         </div>

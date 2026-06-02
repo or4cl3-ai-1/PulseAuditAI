@@ -115,13 +115,13 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
       
       {/* Dynamic Lineage Sidebar */}
       <div className="lg:w-80 flex-shrink-0 space-y-8 lg:sticky lg:top-24 h-fit">
-        <div className="bg-slate-900 border border-slate-800/80 p-6 rounded-[2rem] space-y-6 shadow-md">
+        <div className="bg-slate-900 border border-slate-800/80 p-5 sm:p-6 rounded-[2rem] space-y-6 shadow-md">
           <div className="space-y-1">
             <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">Regulatory Lineage</h3>
-            <p className="text-xs text-slate-400 font-semibold">Track historical iterations of this dataset</p>
+            <p className="text-xs text-slate-450 font-semibold">Track historical iterations of this dataset</p>
           </div>
           
-          <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+          <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto lg:max-h-72 pr-1 pb-3 lg:pb-0 scroll-smooth snap-x snap-mandatory">
             {allVersions
               .filter(v => v.groupId === audit.groupId)
               .sort((a, b) => b.version - a.version)
@@ -129,7 +129,7 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
                 <button
                   key={v.id}
                   onClick={() => onSelectVersion(v)}
-                  className={`w-full p-4 rounded-xl text-left transition-all group font-sans border cursor-pointer select-none ${
+                  className={`w-64 sm:w-72 lg:w-full shrink-0 snap-start p-4 rounded-xl text-left transition-all group font-sans border cursor-pointer select-none min-h-[44px] ${
                     v.id === audit.id 
                       ? 'bg-indigo-600 text-white border-transparent shadow-xl shadow-indigo-600/10' 
                       : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
@@ -152,7 +152,7 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
           {(userRole === UserRole.ADMIN || userRole === UserRole.AUDITOR) && (
             <button 
               onClick={() => onNewVersion(audit)}
-              className="w-full py-4 bg-slate-950 text-indigo-400 border border-slate-800 rounded-xl font-black text-[10px] uppercase tracking-[0.15em] hover:bg-slate-900 hover:border-slate-700/80 hover:text-indigo-300 transition-colors cursor-pointer select-none flex items-center justify-center gap-2"
+              className="w-full py-4 bg-slate-950 text-indigo-400 border border-slate-800 rounded-xl font-black text-[10px] uppercase tracking-[0.15em] hover:bg-slate-900 hover:border-slate-700/80 hover:text-indigo-300 transition-colors cursor-pointer select-none flex items-center justify-center gap-2 min-h-[44px]"
             >
               <RefreshCw className="w-3.5 h-3.5 animate-spin-slow" />
               Re-Audit New Version
@@ -373,15 +373,15 @@ const AuditReport: React.FC<AuditReportProps> = ({ audit, allVersions, onSelectV
       </div>
 
       {/* Slide-out persistent contextual Chat Assistant Panel (Section 3) */}
-      <div className="fixed bottom-10 right-10 z-50">
+      <div className="fixed bottom-4 right-4 md:bottom-10 md:right-10 z-50">
         {chatOpen ? (
-          <div className="w-96 md:w-[460px] h-[640px] bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-800 flex flex-col overflow-hidden animate-slide-up ring-1 ring-white/5">
+          <div className="w-[calc(100vw-2rem)] md:w-[460px] max-w-[460px] h-[560px] md:h-[640px] bg-slate-900 rounded-[2rem] shadow-2xl border border-slate-800 flex flex-col overflow-hidden animate-slide-up ring-1 ring-white/5">
             
             {/* Slide Header */}
-            <div className="bg-slate-800/80 p-6 text-white flex justify-between items-center border-b border-slate-700/60 backdrop-blur-md">
+            <div className="bg-slate-800/80 p-5 md:p-6 text-white flex justify-between items-center border-b border-slate-700/60 backdrop-blur-md">
               <div className="flex items-center gap-3">
                 <span className="flex h-2.5 w-2.5 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-duration-1000"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                 </span>
                 <div>
